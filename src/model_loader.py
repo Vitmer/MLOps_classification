@@ -7,8 +7,8 @@ from tensorflow.keras.applications.efficientnet import preprocess_input
 
 # Load text and image models
 def load_models():
-    text_model = load_model('models/dnn_classifier.h5')
-    vectorizer = joblib_load('models/Tfidf_Vectorizer.joblib')
+    text_model = load_model('src/models/dnn_classifier.h5')
+    vectorizer = joblib_load(src/models/Tfidf_Vectorizer.joblib')
     return text_model, vectorizer
 
 # Preprocess image
