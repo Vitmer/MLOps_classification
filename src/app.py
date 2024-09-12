@@ -5,15 +5,14 @@ from PIL import Image, ImageOps
 import numpy as np
 from joblib import load as joblib_load
 from tensorflow import expand_dims, convert_to_tensor, float32
-from tensorflow.keras.applications.efficientnet import preprocess_input
 from tensorflow.keras.applications import EfficientNetB0
+from tensorflow.keras.applications.efficientnet import preprocess_input
 
 app = FastAPI()
 
-# Load pre-trained models
-image_model = EfficientNetB0(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
-text_model = load_model('models/dnn_classifier.h5')
-vectorizer = joblib_load('models/Tfidf_Vectorizer.joblib')
+# Corrected paths to model and vectorizer
+text_model = load_model('src/models/dnn_classifier.h5')
+vectorizer = joblib_load('src/models/Tfidf_Vectorizer.joblib')
 
 # Preprocess image
 def preprocess_image(image, target_size=(224, 224)):
