@@ -8,8 +8,8 @@ test_image_path = 'src/test_images/POC_0.jpg'  # Update path to the new location
 
 # Sample data for product designation and description
 data = {
-    'designation': 'Test Product',
-    'description': 'This is a test description for the product.'
+    'designation': 'L\'Amour aux temps du choléra',
+    'description': 'Quand on est un télégraphiste dont l’opulence est loin d’être le pain quotidien et une jeune écolière d’une famille plutôt aisée, l’amour est sans doute le meilleur moyen pour se compliquer la vie. Mais l’amour, aux Caraïbes, a pour soeur aînée la déraison. Florentino, amoureux de Fermina, va connaître cet état second dont les symptômes - plaisirs subtils de l’attente et souffrances de l’éloignement - sont si proches d’une maladie mortelle. Mais lorsqu’il commença à attendre la réponse à sa première lettre, son anxiété se compliqua de diarrhées et de vomissements verts, il perdit le sens de l’orientation, souffrant d’évanouissements subits.'
 }
 
 # Open the test image and send it along with the form data to the server
