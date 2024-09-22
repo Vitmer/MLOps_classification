@@ -1,8 +1,8 @@
 fastapi
 uvicorn
+boto3
+numpy
 tensorflow
-pillow
-joblib
 scikit-learn
-requests
-python-multipart
+pillow
+prometheus_client

@@ -1,31 +1,31 @@
-# Use a base Python image
-FROM python:3.9
+# Используйте базовый образ Amazon Linux 2
+FROM amazonlinux:2
 
-# Set the working directory
-WORKDIR /app
+# Установите системные зависимости
+RUN yum update -y && \
+    yum install -y \
+    python3 \
+    python3-pip \
+    gcc \
+    gcc-c++ \
+    libatomic \
+    libstdc++-devel \
+    && yum clean all
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    libhdf5-dev \
-    libhdf5-serial-dev \
-    hdf5-tools \
-    zlib1g-dev \
-    libjpeg-dev \
-    libpng-dev \
-    libglib2.0-0
-
-# Copy requirements file
+# Установите зависимости вашего приложения
 COPY requirements.txt .
 
-# Install Python dependencies
-RUN pip install --upgrade pip  
-RUN pip install --no-cache-dir -r requirements.txt
+# Установите Python зависимости
+RUN pip3 install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the app
-COPY . .
+# Скопируйте приложение в контейнер
+COPY . /app
 
-# Expose the port
+# Установите рабочую директорию
+WORKDIR /app
+
+# Открывайте порты, если необходимо (например, для FastAPI)
 EXPOSE 8000
 
-# Command to run the app
-CMD ["uvicorn", "src.app:app", "--host", "0.0.0.0", "--port", "8000"]
+# Команда для запуска приложения
+CMD ["uvicorn", "src.api.app:app", "--host", "0.0.0.0", "--port", "8000"]
