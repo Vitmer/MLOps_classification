@@ -3,7 +3,7 @@ name: Build and Push Docker Image to Docker Hub
 on:
   push:
     branches:
-      - master  # Trigger on push to the master branch
+      - main  
   pull_request:
     branches:
       - master
