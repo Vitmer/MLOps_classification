@@ -25,8 +25,8 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
         with:
-          username: ${{ secrets.Vitmer }}  # Make sure you have added these secrets in GitHub
-          password: ${{ secrets.Vbkkbjyths2024 }}
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       # Build and push the Docker image
       - name: Build and push Docker image
@@ -34,7 +34,7 @@ jobs:
         with:
           context: .  # Docker build context (default is the current directory)
           push: true
-          tags: ${{ secrets.Vitmer }}/mlops:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/mlops:latest
 
       # Logout from Docker Hub
       - name: Log out from Docker Hub
