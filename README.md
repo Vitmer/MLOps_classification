@@ -70,6 +70,6 @@ Architecture:
 	•	Store machine learning models, large datasets, or database backups.
 	4.	CI/CD with GitHub Actions:
 	•	
-	
+	Automate the build, testing, and deployment of containers.
 	
 	Automate the build, testing, and deployment of containers.
