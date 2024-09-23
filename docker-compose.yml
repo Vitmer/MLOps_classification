@@ -1,3 +1,4 @@
+version: '3.7'
 
 services:
   fastapi:
@@ -5,14 +6,27 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./app:/app
+      - ./src/api:/app  # Mounting the main application code
+      - ./src/data:/app/data  # Mounting a volume for data
+      - ./src/models:/app/models  # Mounting a volume for models
     depends_on:
       - prometheus
       - grafana
+      - data-container  # Data container
     networks:
       - monitoring
     environment:
       - PROMETHEUS_MULTIPROC_DIR=/tmp
+    command: uvicorn app:app --host 0.0.0.0 --port 8000
+
+  data-container:
+    image: vitmer/mydata-container:latest  # Data container image
+    volumes:
+      - ./src/data:/app/data  # Volume for data storage
+      - ./src/models:/app/models  # Volume for model storage
+    networks:
+      - monitoring
+    command: ["tail", "-f", "/dev/null"]  # Container runs in the background providing data
 
   prometheus:
     image: prom/prometheus
@@ -36,6 +50,9 @@ services:
 
 volumes:
   grafana_data:
+  data_volume:  # Volume for data storage
+  models_volume:  # Volume for model storage
 
 networks:
   monitoring:
+    driver: bridge
