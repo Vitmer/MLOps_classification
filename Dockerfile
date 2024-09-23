@@ -1,33 +1,32 @@
-# Используем Amazon Linux 2 как базовый образ
-FROM amazonlinux:2
+# Use the Ubuntu 20.04 base image
+FROM ubuntu:20.04
 
-# Установим необходимые системные зависимости
-RUN yum update -y && \
-    yum install -y \
+# Disable interactive prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Update the package list and install dependencies
+RUN apt-get update -y && apt-get install -y \
     python3 \
     python3-pip \
+    build-essential \
     gcc \
-    gcc-c++ \
-    libatomic \
-    libstdc++-devel \
-    hdf5 \
-    hdf5-devel \
-    pkgconfig \
-    && yum clean all
+    libhdf5-dev \
+    pkg-config \
+    libpython3-dev
 
-# Обновим pip до последней версии
+# Upgrade pip
 RUN pip3 install --upgrade pip
 
-# Установим зависимости Python из файла requirements.txt
+# Set working directory
 WORKDIR /app
+
+# Copy requirements.txt and install dependencies
 COPY requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-# Скопируем код приложения в контейнер
+# Copy the application code
 COPY . .
 
-# Откроем порт для FastAPI
+# Expose the port and run the application
 EXPOSE 8000
-
-# Команда для запуска приложения
-CMD ["uvicorn", "src.api.app:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["uvicorn", "src.api.app:app", "--host", "0.0.0.0", "--port", "8000"]

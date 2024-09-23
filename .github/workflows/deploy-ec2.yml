@@ -1,0 +1,29 @@
+name: Deploy Docker Image to EC2
+
+on:
+  push:
+    branches:
+      - master  # Trigger on push to the master branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step to clone the repository
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # SSH into EC2 instance and pull the latest Docker image, then restart the container
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ec2-3-66-30-243.eu-central-1.compute.amazonaws.com  # Replace with your actual EC2 public DNS
+          username: ubuntu  # Default EC2 username for Ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}  # Your private key (Vitalij.pem) stored as a GitHub secret
+          port: 22  # SSH port
+          script: |
+            docker pull vitmer/mlops:latest  # Pull the latest Docker image from Docker Hub
+            docker stop mlops_container || true  # Stop any running container
+            docker rm mlops_container || true  # Remove the stopped container
+            docker run -d --name mlops_container -p 8000:8000 vitmer/mlops:latest  # Run the new Docker image
