@@ -1,11 +1,11 @@
-# Используем легкий базовый образ Alpine
-FROM alpine:latest
+# Используем базовый образ Amazon Linux 2
+FROM amazonlinux:2
 
-# Создаем директории для данных
-RUN mkdir -p /app/data
+# Создаем директорию для данных
+RUN mkdir -p /data/models
 
-# Копируем данные из локальной папки в контейнер
-COPY ./src/data /app/data
+# Копируем данные в контейнер
+COPY src/data /data
+COPY src/models /data/models
 
-# Контейнер будет работать в фоновом режиме
-CMD ["tail", "-f", "/dev/null"]
+# Этот контейнер просто сохраняет данные, поэтому у него нет команд CMD или ENTRYPOINT.

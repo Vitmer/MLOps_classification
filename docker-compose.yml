@@ -1,58 +1,43 @@
-version: '3.7'
+version: '3'
 
 services:
-  fastapi:
-    build: .
+  model:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     volumes:
-      - ./src/api:/app  # Mounting the main application code
-      - ./src/data:/app/data  # Mounting a volume for data
-      - ./src/models:/app/models  # Mounting a volume for models
+      - ./src/data:/app/src/data
+      - ./src/models:/app/src/models
     depends_on:
       - prometheus
       - grafana
-      - data-container  # Data container
-    networks:
-      - monitoring
-    environment:
-      - PROMETHEUS_MULTIPROC_DIR=/tmp
-    command: uvicorn app:app --host 0.0.0.0 --port 8000
+      - data_container
 
-  data-container:
-    image: vitmer/mydata-container:latest  # Data container image
+  data_container:
+    build:
+      context: .
+      dockerfile: Dockerfile.data
     volumes:
-      - ./src/data:/app/data  # Volume for data storage
-      - ./src/models:/app/models  # Volume for model storage
-    networks:
-      - monitoring
-    command: ["tail", "-f", "/dev/null"]  # Container runs in the background providing data
+      - ./src/data:/data
+      - ./src/models:/data/models
 
   prometheus:
     image: prom/prometheus
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
-    networks:
-      - monitoring
 
   grafana:
     image: grafana/grafana
     ports:
       - "3000:3000"
-    volumes:
-      - grafana_data:/var/lib/grafana
     depends_on:
       - prometheus
-    networks:
-      - monitoring
+    volumes:
+      - grafana-storage:/var/lib/grafana
 
 volumes:
-  grafana_data:
-  data_volume:  # Volume for data storage
-  models_volume:  # Volume for model storage
-
-networks:
-  monitoring:
-    driver: bridge
+  grafana-storage:
