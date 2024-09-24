@@ -18,8 +18,8 @@ jobs:
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
-          host: ec2-3-66-30-243.eu-central-1.compute.amazonaws.com  # Replace with your actual EC2 public DNS
-          username: ubuntu  # Default EC2 username for Ubuntu
+          host: ec2-3-72-49-198.eu-central-1.compute.amazonaws.com  # Replace with your actual EC2 public DNS
+          username: ubuntuec2-user  # Default EC2 username for Ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}  # Your private key (Vitalij.pem) stored as a GitHub secret
           port: 22  # SSH port
           script: |
